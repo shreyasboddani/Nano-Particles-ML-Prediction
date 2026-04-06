@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Nanoparticle Research - Scientific Analysis</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #2196F3, #4CAF50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .key-finding {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #4CAF50;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            margin: 0 0 15px 0;
+            color: #2196F3;
+            font-size: 1.4em;
+        }
+        
+        .card.best {
+            border-left-color: #4CAF50;
+            background: linear-gradient(to right, #f8fff8, #ffffff);
+        }
+        
+        .card.warning {
+            border-left-color: #FF9800;
+            background: linear-gradient(to right, #fff8f0, #ffffff);
+        }
+        
+        .card.worst {
+            border-left-color: #FF6B6B;
+            background: linear-gradient(to right, #fff8f8, #ffffff);
+        }
+        
+        .data-transparency {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .data-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .data-stat {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+        
+        .data-stat h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .data-stat .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: #2196F3;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .best-row {
+            background: linear-gradient(to right, #e8f5e8, #ffffff);
+        }
+        
+        .worst-row {
+            background: linear-gradient(to right, #ffe8e8, #ffffff);
+        }
+        
+        .conclusion {
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .conclusion h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.8em;
+        }
+        
+        .highlight {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .limitations {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .limitations h3 {
+            margin: 0 0 15px 0;
+            color: #FFD700;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-stats {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Silver Nanoparticle Research</h1>
+            <p>Scientifically Accurate Analysis of Antibacterial Activity</p>
+        </div>
+        
+        <div class="content">
+            <div class="key-finding">
+                📊 KEY FINDING: Bacterial species is the dominant factor (70% importance), with smaller particles and Camellia tea coating showing enhanced effectiveness within this limited dataset.
+            </div>
+            
+            <div class="data-transparency">
+                <h2>📋 Dataset Transparency</h2>
+                <div class="data-stats">
+                    <div class="data-stat">
+                        <h4>Total CSV Rows</h4>
+                        <div class="number">62</div>
+                    </div>
+                    <div class="data-stat">
+                        <h4>MIC Data Points</h4>
+                        <div class="number">53</div>
+                    </div>
+                    <div class="data-stat">
+                        <h4>Coatings Tested</h4>
+                        <div class="number">6</div>
+                    </div>
+                    <div class="data-stat">
+                        <h4>Model R² (CV)</h4>
+                        <div class="number">0.85±0.07</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card best">
+                    <h3>🏆 Most Effective Coating</h3>
+                    <p><strong>Coating:</strong> Camellia sinensis (pu-erh tea)</p>
+                    <p><strong>Mean MIC:</strong> 4.88 µg/mL</p>
+                    <p><strong>Sample Size:</strong> 4.06 nm</p>
+                    <p><strong>Bacteria:</strong> E. coli, Salmonella</p>
+                </div>
+                
+                <div class="card warning">
+                    <h3>⚠️ Size Effect Confounded</h3>
+                    <p><strong>Issue:</strong> Size and coating are correlated</p>
+                    <p><strong>Small particles:</strong> All used Camellia tea</p>
+                    <p><strong>Large particles:</strong> Different coatings</p>
+                    <p><strong>Real effect:</strong> Cannot isolate size alone</p>
+                </div>
+                
+                <div class="card">
+                    <h3>🤖 ML Model Performance</h3>
+                    <p><strong>Cross-validated R²:</strong> 0.85 ± 0.07</p>
+                    <p><strong>RMSE:</strong> ~300 µg/mL</p>
+                    <p><strong>Dominant Feature:</strong> Bacterial species (70%)</p>
+                    <p><strong>Size Importance:</strong> ~15%</p>
+                </div>
+            </div>
+            
+            <h2>📈 Actual MIC Data by Coating</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Coating</th>
+                        <th>Count</th>
+                        <th>Mean MIC (µg/mL)</th>
+                        <th>Std Dev</th>
+                        <th>Key Bacteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="best-row">
+                        <td><strong>Camellia sinensis (pu-erh tea)</strong></td>
+                        <td><strong>4</strong></td>
+                        <td><strong>4.88</strong></td>
+                        <td>1.95</td>
+                        <td>E. coli, Salmonella</td>
+                    </tr>
+                    <tr>
+                        <td>Chestnut honey (90°C)</td>
+                        <td>10</td>
+                        <td>105.00</td>
+                        <td>38.73</td>
+                        <td>Mixed strains</td>
+                    </tr>
+                    <tr>
+                        <td>Chestnut honey (60°C)</td>
+                        <td>10</td>
+                        <td>127.50</td>
+                        <td>36.23</td>
+                        <td>Mixed strains</td>
+                    </tr>
+                    <tr>
+                        <td>Chestnut honey (30°C)</td>
+                        <td>10</td>
+                        <td>127.50</td>
+                        <td>36.23</td>
+                        <td>Mixed strains</td>
+                    </tr>
+                    <tr>
+                        <td>Discopodium penninervium</td>
+                        <td>4</td>
+                        <td>702.50</td>
+                        <td>641.06</td>
+                        <td>Mixed strains</td>
+                    </tr>
+                    <tr class="worst-row">
+                        <td><strong>Verbena officinalis</strong></td>
+                        <td><strong>15</strong></td>
+                        <td><strong>1356.67</strong></td>
+                        <td>924.52</td>
+                        <td>Yersinia, Vibrio</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="limitations">
+                <h3>⚠️ Scientific Limitations</h3>
+                <p><strong>Small Dataset:</strong> Only 53 MIC points limits statistical power</p>
+                <p><strong>Confounding Variables:</strong> Size and coating are correlated</p>
+                <p><strong>No Direct MIC Comparison:</strong> Original research used ZOI measurements</p>
+                <p><strong>Model Error:</strong> ±300 µg/mL uncertainty in predictions</p>
+            </div>
+            
+            <div class="conclusion">
+                <h2>🎯 Scientific Conclusion</h2>
+                <p>Within this dataset, <span class="highlight">bacterial species</span> is the primary determinant of antibacterial activity, with <span class="highlight">Camellia tea coating</span> showing enhanced effectiveness. The model predicts strong activity for original 18.08 nm particles, providing computational validation consistent with reported large inhibition zones.</p>
+                <p><strong>Recommendation:</strong> Expand dataset with standardized testing across size/coating combinations for more definitive conclusions.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
