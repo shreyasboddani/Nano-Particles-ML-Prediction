@@ -378,13 +378,14 @@
             <div id="abstract" class="abstract">
                 <h2 class="sans-serif">Abstract</h2>
                 <p>This study presents a machine learning-based analysis of silver nanoparticle (AgNP) antibacterial
-                    activity using a rigorously curated dataset of 111 experimental records from 10 peer-reviewed
-                    publications. Using 5-fold cross-validation with a Random Forest regressor, our model achieves an
-                    average R² score of 0.7154 ± 0.2387 with an RMSE of 331.94 µg/mL. The model successfully predicts
-                    the Minimum Inhibitory Concentration (MIC) for Dr. Taduri's experimental parameters (18.08 nm,
-                    Nothapodytes nimmoniana coating) at 113.96 µg/mL, positioning this system in the top quartile for
-                    green-synthesized AgNPs. Feature importance analysis reveals bacterial susceptibility as the
-                    dominant factor (43.3% for Vibrio cholerae), with morphological effects (rod-like shape: 26.1%) and
+                    activity using a rigorously curated dataset of 111 experimental records from 18 source labels. Using
+                    5-fold cross-validation with a Random Forest regressor, our model achieves an
+                    average R² score of 0.7154 ± 0.2387 with an RMSE of 331.94 µg/mL. The model provides computational
+                    support for Dr. Taduri's experimental parameters (18.08 nm,
+                    Nothapodytes nimmoniana coating) with a predicted MIC of 113.96 µg/mL. Feature importance analysis
+                    reveals bacterial susceptibility as the
+                    dominant model feature in this dataset (43.3% for Vibrio cholerae), with morphological effects
+                    (rod-like shape: 26.1%) and
                     coating properties actively modulating antibacterial efficacy.</p>
             </div>
 
@@ -408,7 +409,7 @@
                         <li><strong>Model Target Metric:</strong> Minimum Inhibitory Concentration (MIC) in µg/mL</li>
                         <li><strong>Experimental Validation Metric:</strong> Zone of Inhibition (ZOI) in mm</li>
                         <li><strong>Mathematical Relationship:</strong> MIC and ZOI are inversely correlated. A
-                            prediction of a highly effective (low) MIC computationally validates the physical
+                            prediction of an effective (low) MIC computationally validates the physical
                             observation of a large Zone of Inhibition.</li>
                     </ul>
                 </div>
@@ -431,25 +432,29 @@
                         <div class="stat-label">MIC Data Points</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">24</div>
-                        <div class="stat-label">Unique Coatings</div>
+                        <div class="stat-value">78</div>
+                        <div class="stat-label">ZOI Data Points</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">41</div>
-                        <div class="stat-label">Bacterial Species</div>
+                        <div class="stat-value">65</div>
+                        <div class="stat-label">Both MIC & ZOI</div>
                     </div>
                 </div>
 
                 <h3>Data Quality & Preprocessing</h3>
                 <ul>
-                    <li><strong>Coverage:</strong> Size range of 4.06 to 58.00 nm; MIC range of 1.69 to 2,500.00 µg/mL.
-                    </li>
+                    <li><strong>Coverage:</strong> 111 total records with 86 MIC rows and 78 ZOI rows; 65 rows contain
+                        both metrics.</li>
+                    <li><strong>Gram Distribution:</strong> 51 Gram-negative and 35 Gram-positive bacteria in the MIC
+                        subset.</li>
+                    <li><strong>Diversity:</strong> 24 unique coatings and 41 unique bacterial species.</li>
+                    <li><strong>Size Range:</strong> 4.06 to 58.00 nm; MIC range of 1.69 to 2,500.00 µg/mL.</li>
                     <li><strong>Missing Particle Sizes:</strong> 34 rows imputed utilizing the dataset median (42.57
                         nm).</li>
                     <li><strong>Missing Morphologies:</strong> 39 rows encoded as "Unknown".</li>
                     <li><strong>Categorical Features:</strong> Strict one-hot encoding applied to prevent ordinal bias.
                     </li>
-                    <li><strong>Leakage Prevention:</strong> Maintained via 5-fold cross-validation shuffling.</li>
+                    <li><strong>Leakage Prevention:</strong> Maintained via 5-fold cross-validation with shuffling.</li>
                 </ul>
 
             </section>
@@ -458,7 +463,7 @@
                 <h2>3. Methodology</h2>
                 <p>A <strong>Random Forest Regressor</strong> framework utilizing 200 decision tree estimators was
                     deployed to capture the non-linear biological interactions between the nanoparticles and bacterial
-                    strains. To ensure robust generalizability and prevent the overfitting commonly seen in small-sample
+                    strains. To ensure robust generalizability and reduce overfitting risk commonly seen in small-sample
                     biological data, the model was evaluated using 5-fold cross-validation with aggressive data
                     shuffling. Performance metrics extracted include the Coefficient of Determination (R² score), Root
                     Mean Squared Error (RMSE), and Mean Absolute Error (MAE).</p>
@@ -466,9 +471,10 @@
 
             <section id="performance">
                 <h2>4. Model Performance</h2>
-                <p>The cross-validated algorithm demonstrated a strong predictive capability suitable for highly
-                    variable biological systems. The absence of severe optimistic bias confirms the model learned
-                    underlying physicochemical properties rather than memorizing dataset rows.</p>
+                <p>The cross-validated algorithm demonstrated strong predictive capability suitable for highly
+                    variable biological systems. The 5-fold cross-validation reduces the risk of overfitting, with
+                    individual fold R² scores ranging from 0.331 to 0.985, indicating reasonable model stability across
+                    different training subsets.</p>
 
                 <table class="academic-table">
                     <thead>
@@ -497,14 +503,14 @@
                         <tr>
                             <td><strong>Average MAE</strong></td>
                             <td>114.94 ± 37.63 µg/mL</td>
-                            <td>High precision on highly effective (low MIC) nanoparticle configurations.</td>
+                            <td>High precision on effective (low MIC) nanoparticle configurations.</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <figure>
                     <img src="cv_performance.png" alt="CV Performance Chart">
-                    <figcaption class="sans-serif"><strong>Figure 2:</strong> 5-Fold Cross-Validation R²
+                    <figcaption class="sans-serif"><strong>Figure 1:</strong> 5-Fold Cross-Validation R²
                         performance.</figcaption>
                 </figure>
 
@@ -518,9 +524,10 @@
 
             <section id="features">
                 <h2>5. Feature Importance Analysis</h2>
-                <p>Feature importance analysis explicitly ranks the parameters that drive antibacterial success. The
-                    Random Forest weights reveal that bacterial susceptibility profiles outweigh pure physical
-                    dimensions, though physical dimensions remain the primary controllable engineering variable.</p>
+                <p>Feature importance analysis explicitly ranks the parameters that drive antibacterial success in this
+                    specific Random Forest model. The model weights reveal that bacterial susceptibility profiles
+                    outweigh pure physical dimensions, though physical dimensions remain the primary controllable
+                    engineering variable.</p>
 
                 <div class="two-col">
                     <div>
@@ -536,9 +543,10 @@
                             <li><strong>Discopodium penninervium</strong> (Coating) — 1.1%</li>
                         </ol>
                         <p class="sans-serif" style="font-size: 0.9rem; margin-top: 20px;"><em><strong>Note on Feature
-                                    Importance:</strong> Vibrio cholerae dominance (43.3%) reflects the one-hot encoding
-                                effect and the severe species-specific resistance patterns driving extreme MIC values in
-                                the dataset.</em></p>
+                                    Importance:</strong> The dominance of species-level one-hot features (43.3% for
+                                Vibrio cholerae) reflects this specific model's training on the current dataset
+                                structure and bacterial susceptibility variation. This should not be interpreted as a
+                                universal mechanistic ranking without further validation.</em></p>
                     </div>
                     <div>
                         <figure style="margin: 0;">
@@ -570,11 +578,11 @@
                     </div>
 
                     <div class="highlight-title">Scientific Interpretation</div>
-                    <p class="sans-serif" style="margin-bottom: 0;">The predicted MIC of 113.96 µg/mL is a highly
-                        effective score that computationally validates Dr. Taduri's observation of the highest Zone of
-                        Inhibition against <em>E. coli</em>. Benchmarked against the literature mean of 169 µg/mL, this
-                        positions the <em>N. nimmoniana</em> synthesis explicitly within the <strong>top
-                            quartile</strong> for green-synthesized AgNPs globally.</p>
+                    <p class="sans-serif" style="margin-bottom: 0;">The predicted MIC of 113.96 µg/mL represents an
+                        effective concentration that provides computational support for Dr. Taduri's experimental Zone
+                        of Inhibition observations against <em>E. coli</em>. The dataset contains 8 records from
+                        Taduri's work with ZOI data; MIC values are predicted in-silico using the Random Forest model
+                        trained on 86 MIC rows with 5-fold cross-validation.</p>
                 </div>
             </section>
 
@@ -582,9 +590,9 @@
                 <h2>7. Size, Coating, and Bacterial Analysis</h2>
 
                 <h3>Size-Dependent Activity</h3>
-                <p>Quantitative analysis of the dataset confirms that manipulating particle size yields a 5x to 50x
-                    multiplier in antibacterial efficacy (consistent with literature emphasizing that smaller NPs
-                    possess a higher specific surface area, facilitating superior ion release).</p>
+                <p>Quantitative analysis of the dataset shows an approximately 5x to 50x range in antibacterial efficacy
+                    across particle sizes, which is consistent with literature emphasizing that smaller NPs
+                    possess a higher specific surface area, facilitating superior ion release.</p>
                 <ul>
                     <li><strong>Small Particles (4-10 nm):</strong> High efficacy. MIC range 1.69 - 25.00 µg/mL.</li>
                     <li><strong>Medium Particles (15-25 nm):</strong> Optimal stability/efficacy balance. MIC range
@@ -627,7 +635,7 @@
                         <tr>
                             <td>2</td>
                             <td><strong>Nothapodytes nimmoniana</strong></td>
-                            <td><strong>3.12 µg/mL †</strong></td>
+                            <td><strong>3.12 µg/mL (predicted)</strong></td>
                             <td><strong>Phytochemical synergy</strong></td>
                         </tr>
                         <tr>
@@ -656,8 +664,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="table-caption">† ZOI data sourced physically; exact MIC metric predicted by ML model
-                    mapping.</div>
+                <div class="table-caption">Mean MIC values observed among rows in this dataset by coating group.</div>
 
                 <h3 style="margin-top: 40px;">Representative Experimental Matrix</h3>
                 <table class="academic-table">
@@ -676,9 +683,9 @@
                             <td>18.08</td>
                             <td>N. nimmoniana</td>
                             <td>E. coli</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td><span class="source-tag">Taduri et al.</span></td>
+                            <td>113.96 (predicted)</td>
+                            <td>not reported</td>
+                            <td><span class="source-tag">Taduri et al., NASB-D-25-00274.pdf</span></td>
                         </tr>
                         <tr>
                             <td>4.06</td>
@@ -686,7 +693,7 @@
                             <td>E. coli</td>
                             <td>7.8</td>
                             <td>15.0</td>
-                            <td><span class="source-tag">Loo et al.</span></td>
+                            <td><span class="source-tag">Loo et al., Front Microbiol 2018</span></td>
                         </tr>
                         <tr>
                             <td>4.06</td>
@@ -694,7 +701,7 @@
                             <td>Salmonella</td>
                             <td>3.9</td>
                             <td>20.0</td>
-                            <td><span class="source-tag">Loo et al.</span></td>
+                            <td><span class="source-tag">Loo et al., Front Microbiol 2018</span></td>
                         </tr>
                         <tr>
                             <td>21.65</td>
@@ -702,7 +709,7 @@
                             <td>E. coli</td>
                             <td>70.0</td>
                             <td>25.0</td>
-                            <td><span class="source-tag">Getachew et al.</span></td>
+                            <td><span class="source-tag">Getachew et al., Sci Rep 2025</span></td>
                         </tr>
                         <tr>
                             <td>42.57</td>
@@ -710,7 +717,7 @@
                             <td>V. cholerae</td>
                             <td>2,500.0</td>
                             <td>13.16</td>
-                            <td><span class="source-tag">Sanchooli et al.</span></td>
+                            <td><span class="source-tag">Sanchooli et al., Iran J Microbiol 2018</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -745,16 +752,18 @@
                     synthetic baselines.</p>
 
                 <h3>Computational Enhancement to Taduri Research</h3>
-                <p>Beyond retrospective validation, this model proactively guides the optimization of Dr. Taduri's
-                    protocol. While the 18.08 nm particle is highly effective, computational scaling suggests that
+                <p>Beyond retrospective analysis, this model suggests potential directions for optimizing Dr. Taduri's
+                    protocol. While the 18.08 nm particle shows effective antibacterial activity, computational analysis
+                    indicates that
                     manipulating the extract concentration or reaction temperature to target the <strong>10-15 nm
-                        range</strong> could yield an additional 5-20x improvement in MIC. </p>
+                        range</strong> could be a promising direction for future experimental work. </p>
 
                 <h3>Final Recommendation</h3>
-                <p>Machine learning provides definitive, independent, mathematical validation of Dr. Taduri's <em>N.
-                        nimmoniana</em> AgNPs as a highly effective antimicrobial agent. This computational framework
-                    accelerates the translation of green AgNP research from bench to clinic by replacing traditional
-                    trial-and-error chemistry with targeted, predictive engineering.</p>
+                <p>This model provides computational support for Dr. Taduri's <em>N.
+                        nimmoniana</em> silver nanoparticle system and suggests that nanoparticle size, coating, and
+                    bacterial species jointly influence antibacterial response. The Random Forest model with 5-fold
+                    cross-validation on 86 MIC rows offers a data-driven approach to guide nanoparticle optimization.
+                </p>
             </section>
 
             <section id="sources">
@@ -763,7 +772,7 @@
                 <ul class="sans-serif" style="font-size: 0.95rem; color: var(--text-light);">
                     <li>Taduri et al., NASB-D-25-00274.pdf (8 records)</li>
                     <li>Taduri et al., Optik 2020 (5 records)</li>
-                    <li>Keskin et al., Molecules 2023, DOI: 10.3390/molecules28031358 (30 records)</li>
+                    <li>Keskin et al., Molecules 2023 [web:36] (30 records)</li>
                     <li>Sanchooli et al., Iran J Microbiol 2018 (15 records)</li>
                     <li>Withania somnifera broad-spectrum study (15 records)</li>
                     <li>Skandalis et al., Nanomaterials 2017 (8 records)</li>
