@@ -184,10 +184,19 @@ Machine learning **validates Dr. Taduri's N. nimmoniana AgNPs as highly effectiv
 
 **Primary Literature Sources:**
 - Taduri et al., NASB-D-25-00274.pdf (8 records)
+- Taduri et al., Optik 2020 (5 records)
 - Keskin et al., Molecules 2023, DOI: 10.3390/molecules28031358 (30 records)
 - Sanchooli et al., Iran J Microbiol 2018 (15 records)
-- Withania somnifera study (15 records)
-- Additional 6 research papers providing diverse experimental contexts
+- Withania somnifera broad-spectrum study (15 records)
+- Skandalis et al., Nanomaterials 2017 (8 records)
+- Loo et al., Front Microbiol 2018 (4 records)
+- Getachew et al., Sci Rep 2025 (4 records)
+- Lawsonia inermis PMC10794286 (3 records)
+- RSC review (3 records)
+- Safflower 2024 (2 records)
+- Resistance study (2 records)
+- Review (2 records)
+- Bio act (1 record)
 
 **Data Integration:**
 - All experimental records sourced from peer-reviewed publications

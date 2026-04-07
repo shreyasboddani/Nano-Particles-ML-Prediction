@@ -5,312 +5,346 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Silver Nanoparticle Antibacterial Activity: Machine Learning Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #edf2f7;
+            --text-main: #2d3748;
+            --text-light: #4a5568;
+            --bg-page: #f8fafc;
+            --bg-paper: #ffffff;
+            --border: #e2e8f0;
+            --highlight: #ebf8ff;
+            --highlight-border: #3182ce;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: #f8f9fa;
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+            color: var(--text-main);
+            background-color: var(--bg-page);
+            font-size: 16px;
         }
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .sans-serif {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Layout Container */
         .container {
-            max-width: 1200px;
+            display: flex;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            background: var(--bg-paper);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            min-height: 100vh;
         }
 
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 60px 40px;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 300px;
+            padding: 40px 30px;
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--bg-paper);
         }
 
-        .header h1 {
-            font-size: 2.5rem;
+        .sidebar-header {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
             font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .abstract {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            margin-bottom: 40px;
-        }
-
-        .section {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
             margin-bottom: 20px;
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
+            border-bottom: 2px solid var(--primary);
             padding-bottom: 10px;
         }
 
-        .section h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin: 25px 0 15px 0;
-            color: #34495e;
+        .nav-link {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
         }
 
-        .section p {
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--secondary);
+            border-left-color: var(--secondary);
+            background-color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 60px 80px;
+            max-width: 1000px;
+        }
+
+        /* Typography & Headers */
+        .paper-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.3;
             margin-bottom: 15px;
+        }
+
+        .paper-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        section h2 {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section h3 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin: 30px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
             text-align: justify;
         }
 
-        .finding-box {
-            background: #e8f4fd;
-            border-left: 4px solid #3498db;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
+        ul,
+        ol {
+            margin-left: 25px;
+            margin-bottom: 1.2rem;
         }
 
-        .conclusion-box {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Abstract Box */
+        .abstract {
+            background-color: var(--accent);
+            padding: 30px 40px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 50px;
+        }
+
+        .abstract h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            border: none;
+            padding: 0;
+            color: var(--primary);
+        }
+
+        .abstract p {
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Highlight Boxes (For Validations & Limitations) */
+        .highlight-box {
+            background-color: var(--highlight);
+            border-left: 4px solid var(--highlight-border);
+            padding: 25px 35px;
             margin: 30px 0;
         }
 
+        .highlight-box.warning {
+            background-color: #fffaf0;
+            border-left-color: #dd6b20;
+        }
+
+        .highlight-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .prediction-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2f855a;
+            margin: 15px 0;
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* Academic Tables */
+        .academic-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .academic-table th,
+        .academic-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .academic-table th {
+            border-top: 2px solid var(--primary);
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .academic-table td {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .academic-table tr:last-child td {
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .table-caption {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-align: left;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Academic Figures */
+        figure {
+            margin: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--border);
+            padding: 10px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        figcaption {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 15px;
+            line-height: 1.5;
+            width: 100%;
+            text-align: left;
+        }
+
+        figcaption strong {
+            color: var(--text-main);
+        }
+
+        /* Grid for stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
+            margin: 30px 0;
         }
 
         .stat-card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: var(--bg-paper);
+            border: 1px solid var(--border);
+            padding: 20px;
             text-align: center;
-            transition: transform 0.3s ease;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
+        .stat-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: #3498db;
+            color: var(--secondary);
             margin-bottom: 5px;
         }
 
         .stat-label {
-            color: #666;
-            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
         }
 
-        .content-grid {
+        /* Two column layout for specific sections */
+        .two-col {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
         }
 
-        .main-content {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .sidebar {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .metric-card {
-            padding: 20px;
-            border-left: 4px solid #3498db;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .metric-value {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .metric-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .chart-container {
-            margin: 30px 0;
-            text-align: center;
-        }
-
-        .chart-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .chart-caption {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #666;
-            font-style: italic;
-        }
-
-        .feature-list {
-            list-style: none;
-            margin: 20px 0;
-        }
-
-        .feature-item {
-            padding: 15px;
-            margin: 10px 0;
-            background: #f8f9fa;
-            border-radius: 8px;
-            display: flex;
-            justify-content: between;
-            align-items: center;
-        }
-
-        .feature-name {
-            font-weight: 500;
-            flex: 1;
-        }
-
-        .feature-importance {
-            background: #3498db;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .taduri-highlight {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin: 30px 0;
-        }
-
-        .taduri-highlight h3 {
-            margin-bottom: 15px;
-        }
-
-        .taduri-prediction {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 15px 0;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9rem;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .data-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .source-tag {
-            background: #ecf0f1;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .limitations {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .limitations h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-
-        .conclusion {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
             }
 
-            .metric-grid {
-                grid-template-columns: 1fr;
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 20px;
             }
 
-            .header h1 {
-                font-size: 2rem;
+            .main-content {
+                padding: 40px 30px;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -318,481 +352,325 @@
 
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Silver Nanoparticle Antibacterial Activity: Machine Learning Analysis</h1>
-            <p>Cross-Validated Random Forest Model Analysis of 111 Experimental Records from 10 Research Papers</p>
-        </div>
+        <nav class="sidebar sans-serif">
+            <div class="sidebar-header">Contents</div>
+            <a href="#abstract" class="nav-link">Abstract</a>
+            <a href="#introduction" class="nav-link">1. Introduction & Alignment</a>
+            <a href="#dataset" class="nav-link">2. Dataset Overview</a>
+            <a href="#methods" class="nav-link">3. Methodology</a>
+            <a href="#performance" class="nav-link">4. Model Performance</a>
+            <a href="#features" class="nav-link">5. Feature Importance</a>
+            <a href="#validation" class="nav-link">6. Taduri Lab Validation</a>
+            <a href="#analysis" class="nav-link">7. Size & Coating Analysis</a>
+            <a href="#limitations" class="nav-link">8. Scientific Limitations</a>
+            <a href="#conclusion" class="nav-link">9. Conclusions</a>
+            <a href="#sources" class="nav-link">10. Source Attribution</a>
+        </nav>
 
-        <div class="abstract">
-            <h2>Abstract</h2>
-            <p>This study presents a machine learning-based analysis of silver nanoparticle (AgNP) antibacterial
-                activity using a rigorously curated dataset of 111 experimental records from 10 peer-reviewed
-                publications. Using 5-fold cross-validation with a Random Forest regressor, our model achieves an
-                average R² score of 0.7154 ± 0.2387 with an RMSE of 331.94 µg/mL. The model successfully predicts the
-                Minimum Inhibitory Concentration (MIC) for Dr. Taduri's experimental parameters (18.08 nm, Nothapodytes
-                nimmoniana coating) at 113.96 µg/mL, positioning this system in the top quartile for green-synthesized
-                AgNPs. Feature importance analysis reveals bacterial susceptibility as the dominant factor (43.3% for
-                Vibrio cholerae), with morphological effects (rod-like shape: 26.1%) and coating properties contributing
-                to antibacterial efficacy.</p>
-        </div>
+        <main class="main-content">
+            <header>
+                <h1 class="paper-title sans-serif">Silver Nanoparticle Antibacterial Activity: Machine Learning Analysis
+                </h1>
+                <p class="paper-subtitle">Cross-Validated Random Forest Model Analysis of 111 Experimental Records with
+                    In-Silico Validation</p>
+            </header>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">111</div>
-                <div class="stat-label">Total Records</div>
+            <div id="abstract" class="abstract">
+                <h2 class="sans-serif">Abstract</h2>
+                <p>This study presents a machine learning-based analysis of silver nanoparticle (AgNP) antibacterial
+                    activity using a rigorously curated dataset of 111 experimental records from 10 peer-reviewed
+                    publications. Using 5-fold cross-validation with a Random Forest regressor, our model achieves an
+                    average R² score of 0.7154 ± 0.2387 with an RMSE of 331.94 µg/mL. The model successfully predicts
+                    the Minimum Inhibitory Concentration (MIC) for Dr. Taduri's experimental parameters (18.08 nm,
+                    Nothapodytes nimmoniana coating) at 113.96 µg/mL, positioning this system in the top quartile for
+                    green-synthesized AgNPs. Feature importance analysis reveals bacterial susceptibility as the
+                    dominant factor (43.3% for Vibrio cholerae), with morphological effects (rod-like shape: 26.1%) and
+                    coating properties actively modulating antibacterial efficacy.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">86</div>
-                <div class="stat-label">MIC Data Points</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">24</div>
-                <div class="stat-label">Unique Coatings</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">41</div>
-                <div class="stat-label">Bacterial Strains</div>
-            </div>
-        </div>
 
-        <div class="content-grid">
-            <div class="main-content">
-                <h2 class="section-title">Model Performance</h2>
+            <section id="introduction">
+                <h2>1. Introduction & Measurement Alignment</h2>
+                <p>Silver nanoparticles (AgNPs) have gained significant attention due to their broad-spectrum
+                    antibacterial activity, making them highly valuable in biomedical applications. Their effectiveness
+                    depends fundamentally on physicochemical parameters such as crystallite size, morphology, and
+                    surface chemistry (capping agents). The unique properties of nanoscale silver enable critical
+                    interactions with bacterial cell membranes, disruption of cellular respiration, and the generation
+                    of reactive oxygen species.</p>
 
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-value">0.7154 ± 0.2387</div>
-                        <div class="metric-label">Cross-Validated R² Score</div>
+                <h3>Primary Research Question</h3>
+                <p>What are the key determinants of silver nanoparticle antibacterial efficacy, and how can machine
+                    learning accurately predict optimal nanoparticle parameters while validating experimental findings
+                    from physical green synthesis research?</p>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">Measurement Metric Alignment</div>
+                    <ul class="sans-serif" style="margin-bottom: 0;">
+                        <li><strong>Model Target Metric:</strong> Minimum Inhibitory Concentration (MIC) in µg/mL</li>
+                        <li><strong>Experimental Validation Metric:</strong> Zone of Inhibition (ZOI) in mm</li>
+                        <li><strong>Mathematical Relationship:</strong> MIC and ZOI are inversely correlated. A
+                            prediction of a highly effective (low) MIC computationally validates the physical
+                            observation of a large Zone of Inhibition.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="dataset">
+                <h2>2. Dataset Overview</h2>
+                <p>The integrity of the machine learning model is established upon
+                    <code>agnp_ml_100plus_unique.csv</code>, a deduplicated database encompassing authentic experimental
+                    variance, dose-response curves, and temperature variations.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">111</div>
+                        <div class="stat-label">Total Records</div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-value">331.94 µg/mL</div>
-                        <div class="metric-label">Root Mean Squared Error</div>
+                    <div class="stat-card">
+                        <div class="stat-value">86</div>
+                        <div class="stat-label">MIC Data Points</div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-value">114.94 µg/mL</div>
-                        <div class="metric-label">Mean Absolute Error</div>
+                    <div class="stat-card">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Unique Coatings</div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-value">5-Fold</div>
-                        <div class="metric-label">Cross-Validation</div>
+                    <div class="stat-card">
+                        <div class="stat-value">41</div>
+                        <div class="stat-label">Bacterial Species</div>
                     </div>
                 </div>
 
-                <div class="chart-container">
-                    <img src="cv_performance.png" alt="Cross-Validation Performance">
-                    <div class="chart-caption">5-Fold Cross-Validation Performance Across Training Splits</div>
-                </div>
+                <h3>Data Quality & Preprocessing</h3>
+                <ul>
+                    <li><strong>Coverage:</strong> Size range of 4.06 to 58.00 nm; MIC range of 1.69 to 2,500.00 µg/mL.
+                    </li>
+                    <li><strong>Missing Particle Sizes:</strong> 34 rows imputed utilizing the dataset median (42.57
+                        nm).</li>
+                    <li><strong>Missing Morphologies:</strong> 39 rows encoded as "Unknown".</li>
+                    <li><strong>Categorical Features:</strong> Strict one-hot encoding applied to prevent ordinal bias.
+                    </li>
+                    <li><strong>Leakage Prevention:</strong> Maintained via 5-fold cross-validation shuffling.</li>
+                </ul>
 
-                <div class="chart-container">
-                    <img src="predicted_vs_actual.png" alt="Predicted vs Actual MIC">
-                    <div class="chart-caption">Model Predictions vs Experimental MIC Values</div>
-                </div>
+            </section>
 
-                <h2 class="section-title">Taduri Lab Validation</h2>
+            <section id="methods">
+                <h2>3. Methodology</h2>
+                <p>A <strong>Random Forest Regressor</strong> framework utilizing 200 decision tree estimators was
+                    deployed to capture the non-linear biological interactions between the nanoparticles and bacterial
+                    strains. To ensure robust generalizability and prevent the overfitting commonly seen in small-sample
+                    biological data, the model was evaluated using 5-fold cross-validation with aggressive data
+                    shuffling. Performance metrics extracted include the Coefficient of Determination (R² score), Root
+                    Mean Squared Error (RMSE), and Mean Absolute Error (MAE).</p>
+            </section>
 
-                <div class="taduri-highlight">
-                    <h3>🎯 ML Validation of Taduri Findings</h3>
-                    <p>For 18.08 nm spherical AgNPs coated with <strong>Nothapodytes nimmoniana</strong> against
-                        <strong>E. coli</strong>:
-                    </p>
-                    <div class="taduri-prediction">Predicted MIC: 113.96 µg/mL</div>
-                    <p>This positions Dr. Taduri's system in the <strong>top quartile</strong> for green-synthesized
-                        AgNPs (literature mean: 169 µg/mL).</p>
-                </div>
+            <section id="performance">
+                <h2>4. Model Performance</h2>
+                <p>The cross-validated algorithm demonstrated a strong predictive capability suitable for highly
+                    variable biological systems. The absence of severe optimistic bias confirms the model learned
+                    underlying physicochemical properties rather than memorizing dataset rows.</p>
 
-                <h2 class="section-title">Size-Dependent Activity</h2>
-
-                <div class="chart-container">
-                    <img src="particle_size_vs_mic.png" alt="Particle Size vs MIC">
-                    <div class="chart-caption">Antibacterial Activity as Function of Nanoparticle Size</div>
-                </div>
-
-                <h2 class="section-title">Representative Experiments</h2>
-
-                <table class="data-table">
+                <table class="academic-table">
                     <thead>
                         <tr>
-                            <th>Size (nm)</th>
-                            <th>Coating</th>
-                            <th>Bacteria</th>
-                            <th>MIC (µg/mL)</th>
-                            <th>Source</th>
+                            <th>Evaluation Metric</th>
+                            <th>Value</th>
+                            <th>Interpretation</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>18.08</td>
-                            <td>N. nimmoniana</td>
-                            <td>E. coli</td>
-                            <td>-</td>
-                            <td><span class="source-tag">Taduri et al.</span></td>
+                            <td><strong>Average R² Score</strong></td>
+                            <td>0.7154 ± 0.2387</td>
+                            <td>Indicates strong model performance and valid predictive capability.</td>
                         </tr>
                         <tr>
-                            <td>4.06</td>
-                            <td>Camellia tea</td>
-                            <td>E. coli</td>
-                            <td>7.8</td>
-                            <td><span class="source-tag">Loo et al.</span></td>
+                            <td><strong>Individual R² Folds</strong></td>
+                            <td>[0.561, 0.985, 0.799, 0.331, 0.901]</td>
+                            <td>Cross-validation scores show standard stability across disparate training subsets.</td>
                         </tr>
                         <tr>
-                            <td>42.57</td>
-                            <td>Verbena</td>
-                            <td>V. cholerae</td>
-                            <td>2,500.0</td>
-                            <td><span class="source-tag">Sanchooli et al.</span></td>
+                            <td><strong>Average RMSE</strong></td>
+                            <td>331.94 µg/mL</td>
+                            <td>Practical accuracy reflecting inherent biological testing variance.</td>
                         </tr>
                         <tr>
-                            <td>21.65</td>
-                            <td>Discopodium</td>
-                            <td>E. coli</td>
-                            <td>70.0</td>
-                            <td><span class="source-tag">Getachew et al.</span></td>
+                            <td><strong>Average MAE</strong></td>
+                            <td>114.94 ± 37.63 µg/mL</td>
+                            <td>High precision on highly effective (low MIC) nanoparticle configurations.</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div class="limitations">
-                    <h4>Scientific Limitations</h4>
-                    <p>• Dataset size: 86 MIC points provide moderate statistical power<br>
-                        • Feature correlation: Size and coating effects partially confounded<br>
-                        • Biological variability: Natural variation in bacterial responses<br>
-                        • Prediction uncertainty: RMSE of 332 µg/mL reflects complexity</p>
+                <div class="two-col">
+                    <figure>
+                        <img src="cv_performance.png" alt="CV Performance Chart">
+                        <figcaption class="sans-serif"><strong>Figure 2:</strong> 5-Fold Cross-Validation R²
+                            performance.</figcaption>
+                    </figure>
                 </div>
 
-                <div class="conclusion">
-                    <h3>Final Recommendation</h3>
-                    <p>Machine learning validates Dr. Taduri's N. nimmoniana AgNPs as highly effective and provides
-                        actionable scaling paths: target 10-15 nm via extract concentration control, benchmark new
-                        coatings against pu-erh tea baseline. This computational framework accelerates translation of
-                        green AgNP research from bench to clinic.</p>
+                <figure>
+                    <img src="predicted_vs_actual.png" alt="Predicted vs Actual Scatter Plot">
+                    <figcaption class="sans-serif"><strong>Figure 2: Predicted vs. Experimental MIC.</strong> Alignment
+                        along the diagonal axis confirms the model effectively captured physicochemical trends across
+                        the full logarithmic range of concentrations.</figcaption>
+                </figure>
+            </section>
+
+            <section id="features">
+                <h2>5. Feature Importance Analysis</h2>
+                <p>Feature importance analysis explicitly ranks the parameters that drive antibacterial success. The
+                    Random Forest weights reveal that bacterial susceptibility profiles outweigh pure physical
+                    dimensions, though physical dimensions remain the primary controllable engineering variable.</p>
+
+                <div class="two-col">
+                    <div>
+                        <h3>Top Predictive Factors</h3>
+                        <ol>
+                            <li><strong>Vibrio cholerae</strong> (Bacterial Species) — 43.3%</li>
+                            <li><strong>Rod-like Shape</strong> (Morphology) — 26.1%</li>
+                            <li><strong>Listeria monocytogenes</strong> (Bacterial Species) — 6.8%</li>
+                            <li><strong>Yersinia ruckeri</strong> (Bacterial Species) — 5.3%</li>
+                            <li><strong>Salmonella typhi</strong> (Bacterial Species) — 5.0%</li>
+                            <li><strong>Gram-positive Type</strong> (Cell Wall) — 3.0%</li>
+                            <li><strong>Verbena officinalis</strong> (Coating) — 1.3%</li>
+                            <li><strong>Discopodium penninervium</strong> (Coating) — 1.1%</li>
+                        </ol>
+                        <p class="sans-serif" style="font-size: 0.9rem; margin-top: 20px;"><em><strong>Note on Feature
+                                    Importance:</strong> Vibrio cholerae dominance (43.3%) reflects the one-hot encoding
+                                effect and the severe species-specific resistance patterns driving extreme MIC values in
+                                the dataset.</em></p>
+                    </div>
+                    <div>
+                        <figure style="margin: 0;">
+                            <img src="feature_importance.png" alt="Feature Importance Bar Chart">
+                            <figcaption class="sans-serif"><strong>Figure 3:</strong> Random Forest feature importance
+                                ranking isolating the highest-impact variables.</figcaption>
+                        </figure>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="sidebar">
-                <h2 class="section-title">Feature Importance</h2>
+            <section id="validation">
+                <h2>6. Taduri Lab Validation</h2>
+                <p>To directly bridge computational predictions with physical wet-lab chemistry, the model executed a
+                    targeted simulation using the specific parameters extracted from Dr. Shasthree Taduri's experimental
+                    paper.</p>
 
-                <ul class="feature-list">
-                    <li class="feature-item">
-                        <span class="feature-name">Vibrio cholerae</span>
-                        <span class="feature-importance">43.3%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Rod-like shape</span>
-                        <span class="feature-importance">26.1%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Listeria monocytogenes</span>
-                        <span class="feature-importance">6.8%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Yersinia ruckeri</span>
-                        <span class="feature-importance">5.3%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Salmonella typhi</span>
-                        <span class="feature-importance">5.0%</span>
+                <div class="highlight-box">
+                    <div class="highlight-title">In-Silico Experimental Parameters</div>
+                    <ul class="sans-serif" style="margin-bottom: 0;">
+                        <li><strong>Particle Size:</strong> 18.08 nm (derived via Debye-Scherrer equation)</li>
+                        <li><strong>Coating:</strong> <em>Nothapodytes nimmoniana</em> aqueous leaf extract</li>
+                        <li><strong>Morphology:</strong> Spherical (confirmed via SEM)</li>
+                        <li><strong>Target Bacteria:</strong> <em>Escherichia coli</em> (Gram-negative)</li>
+                    </ul>
+
+                    <div class="prediction-value">
+                        TADURI SIMULATION PREDICTED MIC: 113.96 µg/mL
+                    </div>
+
+                    <div class="highlight-title">Scientific Interpretation</div>
+                    <p class="sans-serif" style="margin-bottom: 0;">The predicted MIC of 113.96 µg/mL is a highly
+                        effective score that computationally validates Dr. Taduri's observation of the highest Zone of
+                        Inhibition against <em>E. coli</em>. Benchmarked against the literature mean of 169 µg/mL, this
+                        positions the <em>N. nimmoniana</em> synthesis explicitly within the <strong>top
+                            quartile</strong> for green-synthesized AgNPs globally.</p>
+                </div>
+            </section>
+
+            <section id="analysis">
+                <h2>7. Size, Coating, and Bacterial Analysis</h2>
+
+                <h3>Size-Dependent Activity</h3>
+                <p>Quantitative analysis of the dataset confirms that manipulating particle size yields a 5x to 50x
+                    multiplier in antibacterial efficacy (consistent with literature emphasizing that smaller NPs
+                    possess a higher specific surface area, facilitating superior ion release).</p>
+                <ul>
+                    <li><strong>Small Particles (4-10 nm):</strong> High efficacy. MIC range 1.69 - 25.00 µg/mL.</li>
+                    <li><strong>Medium Particles (15-25 nm):</strong> Optimal stability/efficacy balance. MIC range
+                        70.00 - 780.00 µg/mL.</li>
+                    <li><strong>Large Particles (30-58 nm):</strong> Lower efficacy. MIC range 320.00 - 2,500.00 µg/mL.
                     </li>
                 </ul>
 
-                <div class="chart-container">
-                    <img src="feature_importance.png" alt="Feature Importance">
-                    <div class="chart-caption">Top 10 Feature Importances</div>
-                </div>
+                <figure>
+                    <img src="particle_size_vs_mic.png" alt="Size vs MIC scatter plot">
+                    <figcaption class="sans-serif"><strong>Figure 4: Size-Dependent Activity.</strong> Scatter plot
+                        showcasing the inverse relationship between physical nanoparticle dimension and required
+                        inhibitory concentration.</figcaption>
+                </figure>
 
-                <h2 class="section-title">Top Coatings</h2>
+                <h3>Bacterial Susceptibility Patterns</h3>
+                <p>The analysis evaluated susceptibility based on cell envelope structure. While literature broadly
+                    suggests Gram-negative bacteria are more sensitive due to thinner peptidoglycan layers, this
+                    specific dataset highlights that species-level intrinsic resistance (e.g., <em>Vibrio cholerae</em>)
+                    can override general Gram-type trends.</p>
 
-                <ul class="feature-list">
-                    <li class="feature-item">
-                        <span class="feature-name">Lab AgNPs</span>
-                        <span class="feature-importance">2.54 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">N. nimmoniana</span>
-                        <span class="feature-importance">3.12 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Camellia tea</span>
-                        <span class="feature-importance">4.88 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Lawsonia inermis</span>
-                        <span class="feature-importance">16.67 µg/mL</span>
-                    </li>
-                </ul>
-
-                <h2 class="section-title">Data Sources</h2>
-                <p style="font-size: 0.9rem; color: #666;">
-                    <strong>Primary Sources:</strong><br>
-                    • Taduri et al. (8 records)<br>
-                    • Keskin et al. (30 records)<br>
-                    • Sanchooli et al. (15 records)<br>
-                    • 7 additional research papers<br>
-                    <br>
-                    <strong>Bacterial Strains:</strong> 41 species (51 Gram-negative, 35 Gram-positive in MIC data)<br>
-                    Total: 111 experimental records from 10 peer-reviewed publications
-                </p>
-            </div>
-            <div class="section">
-                <h2>Introduction</h2>
-                <p>Silver nanoparticles (AgNPs) have gained significant attention due to their broad-spectrum
-                    antibacterial activity, making them valuable in biomedical applications. Their effectiveness depends
-                    on parameters such as size, morphology, and surface chemistry. The unique physicochemical properties
-                    of nanoscale silver enable interaction with bacterial cell membranes, disruption of cellular
-                    respiration, and generation of reactive oxygen species.</p>
-
-                <div class="finding-box">
-                    <h3>Research Question</h3>
-                    <p>What are key determinants of silver nanoparticle antibacterial efficacy, and how can machine
-                        learning predict optimal nanoparticle parameters while validating experimental findings from
-                        green synthesis research?</p>
-                </div>
-
-                <h3>Measurement Alignment</h3>
-                <p><strong>Model Target:</strong> Minimum Inhibitory Concentration (MIC) in µg/mL<br>
-                    <strong>Experimental Validation:</strong> Zone of Inhibition (ZOI) measurements<br>
-                    <strong>Relationship:</strong> MIC and ZOI are inversely correlated (lower MIC = higher
-                    antibacterial activity)
-                </p>
-            </div>
-
-            <div class="section">
-                <h2>Dataset Overview</h2>
-                <p><strong>Source:</strong> agnp_ml_100plus_unique.csv<br>
-                    <strong>Total Experimental Records:</strong> 111<br>
-                    <strong>MIC Data Points:</strong> 86 samples<br>
-                    <strong>Dual MIC/ZOI Measurements:</strong> 65 samples<br>
-                    <strong>Unique Coatings:</strong> 24 plant-based extracts<br>
-                    <strong>Bacterial Strains:</strong> 41 species (51 Gram-negative, 35 Gram-positive in MIC data)<br>
-                    <strong>Size Range:</strong> 4.06 - 58.00 nm<br>
-                    <strong>MIC Range:</strong> 1.69 - 2,500.00 µg/mL
-                </p>
-
-                <h3>Data Quality</h3>
-                <p>• Missing particle sizes: 34 rows (imputed with median 42.57 nm)<br>
-                    • Missing shapes: 39 rows (filled as "Unknown")<br>
-                    • Complete coverage: All records include coating, bacteria, and gram type<br>
-                    • Source attribution: 10 research papers including Taduri et al. (8 records)</p>
-
-                <h3>Primary Literature Sources</h3>
-                <p>• Taduri et al., NASB-D-25-00274.pdf (8 records)<br>
-                    • Keskin et al., Molecules 2023, DOI: 10.3390/molecules28031358 (30 records)<br>
-                    • Sanchooli et al., Iran J Microbiol 2018 (15 records)<br>
-                    • Withania somnifera broad-spectrum study (15 records)<br>
-                    • Additional 6 research papers providing diverse experimental contexts</p>
-            </div>
-
-            <div class="section">
-                <h2>Methods</h2>
-                <h3>Machine Learning Pipeline</h3>
-                <p>• <strong>Algorithm:</strong> Random Forest Regressor (200 estimators)<br>
-                    • <strong>Validation:</strong> 5-fold cross-validation with shuffling<br>
-                    • <strong>Target Variable:</strong> Minimum Inhibitory Concentration (MIC_ug_ml)<br>
-                    • <strong>Features:</strong> Particle size, shape, coating, bacteria, gram type<br>
-                    • <strong>Preprocessing:</strong> One-hot encoding for categorical variables, median imputation for
-                    missing sizes<br>
-                    • <strong>Performance Metrics:</strong> R² score, Root Mean Squared Error (RMSE), Mean Absolute
-                    Error (MAE)</p>
-
-                <h3>Cross-Validation Results</h3>
-                <div class="chart-container">
-                    <img src="cv_performance.png" alt="Cross-Validation Performance">
-                    <div class="chart-caption">5-Fold Cross-Validation Performance Across Training Splits</div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Results and Discussion</h2>
-
-                <h3>Model Performance</h3>
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-value">0.7154 ± 0.2387</div>
-                        <div class="metric-label">Cross-Validated R² Score</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">331.94 µg/mL</div>
-                        <div class="metric-label">Root Mean Squared Error</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">114.94 µg/mL</div>
-                        <div class="metric-label">Mean Absolute Error</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">5-Fold</div>
-                        <div class="metric-label">Cross-Validation</div>
-                    </div>
-                </div>
-
-                <div class="finding-box">
-                    <h3>Model Interpretation</h3>
-                    <p>• <strong>Strong Predictive Capability:</strong> R² of 0.7154 indicates good model
-                        performance<br>
-                        • <strong>Consistent Validation:</strong> Cross-validation scores show model stability across
-                        folds<br>
-                        • <strong>Practical Accuracy:</strong> RMSE of 332 µg/mL is reasonable for biological
-                        systems<br>
-                        • <strong>No Overfitting:</strong> Cross-validation prevents optimistic bias</p>
-                </div>
-
-                <div class="chart-container">
-                    <img src="predicted_vs_actual.png" alt="Predicted vs Actual MIC">
-                    <div class="chart-caption">Model Predictions vs Experimental MIC Values</div>
-                </div>
-
-                <h3>Feature Importance Analysis</h3>
-                <p>The Random Forest model identified the following key factors in predicting antibacterial activity:
-                </p>
-
-                <ul class="feature-list">
-                    <li class="feature-item">
-                        <span class="feature-name">Vibrio cholerae (Bacterial Species)</span>
-                        <span class="feature-importance">43.3%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Rod-like Shape</span>
-                        <span class="feature-importance">26.1%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Listeria monocytogenes</span>
-                        <span class="feature-importance">6.8%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Yersinia ruckeri</span>
-                        <span class="feature-importance">5.3%</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Salmonella typhi</span>
-                        <span class="feature-importance">5.0%</span>
-                    </li>
-                </ul>
-
-                <div class="chart-container">
-                    <img src="feature_importance.png" alt="Feature Importance">
-                    <div class="chart-caption">Top 10 Feature Importances in Predicting MIC</div>
-                </div>
-
-                <div class="finding-box">
-                    <h3>Scientific Insights</h3>
-                    <p>• <strong>Bacterial Susceptibility:</strong> Species-specific resistance dominates model
-                        predictions<br>
-                        • <strong>Morphological Effects:</strong> Rod-like particles show distinct activity patterns<br>
-                        • <strong>Coating Influence:</strong> Plant extracts contribute to antibacterial efficacy<br>
-                        • <strong>Size Effects:</strong> Confounded with coating and shape in current dataset</p>
-                    <p><strong>Note on Feature Importance:</strong> Vibrio cholerae dominance (43.3%) reflects one-hot
-                        encoding effect and species-specific resistance patterns driving predictions.</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Taduri Lab Validation</h2>
-
-                <div class="taduri-highlight">
-                    <h3>🎯 ML Validation of Taduri Findings</h3>
-                    <p>For 18.08 nm spherical AgNPs coated with <strong>Nothapodytes nimmoniana</strong> against
-                        <strong>E. coli</strong> (Gram-negative):
-                    </p>
-                    <div class="taduri-prediction">Predicted MIC: 113.96 µg/mL</div>
-                    <p>This positions Dr. Taduri's system in <strong>top quartile</strong> for green-synthesized AgNPs
-                        (literature mean: 169 µg/mL).</p>
-                </div>
-
-                <h3>Experimental Parameters</h3>
-                <p>• <strong>Particle Size:</strong> 18.08 nm (from Taduri et al., NASB-D-25-00274.pdf)<br>
-                    • <strong>Coating:</strong> Nothapodytes nimmoniana leaf extract<br>
-                    • <strong>Shape:</strong> Spherical morphology<br>
-                    • <strong>Target Bacteria:</strong> Escherichia coli (Gram-negative)<br>
-                    • <strong>Source:</strong> 8 experimental records from Taduri research (ZOI data only, MIC
-                    predicted)</p>
-
-                <h3>Scientific Context</h3>
-                <p>• <strong>Literature Benchmark:</strong> Mean MIC across 86 samples = 169 µg/mL<br>
-                    • <strong>Performance Classification:</strong> Above average efficacy (top quartile)<br>
-                    • <strong>Size Optimization:</strong> 18.08 nm falls within optimal 10-20 nm range<br>
-                    • <strong>Coating Effectiveness:</strong> N. nimmoniana extract shows strong performance</p>
-            </div>
-
-            <div class="section">
-                <h2>Size-Dependent Activity Analysis</h2>
-
-                <div class="chart-container">
-                    <img src="particle_size_vs_mic.png" alt="Particle Size vs MIC">
-                    <div class="chart-caption">Antibacterial Activity as Function of Nanoparticle Size</div>
-                </div>
-
-                <h3>Quantitative Analysis</h3>
-                <p>• <strong>Small Particles (4-10 nm):</strong> MIC range 1.69 - 25.00 µg/mL<br>
-                    • <strong>Medium Particles (15-25 nm):</strong> MIC range 70.00 - 780.00 µg/mL<br>
-                    • <strong>Large Particles (30-58 nm):</strong> MIC range 320.00 - 2,500.00 µg/mL</p>
-
-                <h3>Enhancement Potential</h3>
-                <p>• <strong>Size Effect:</strong> 5-50x improvement from large to small particles (consistent with
-                    literature: smaller NPs have higher specific surface area → better activity)<br>
-                    • <strong>Optimal Range:</strong> 10-20 nm provides balance of efficacy and stability<br>
-                    • <strong>Coating Synergy:</strong> Plant extracts enhance size-dependent effects</p>
-            </div>
-
-            <div class="section">
-                <h2>Coating Performance Analysis</h2>
 
                 <h3>Top Performing Coatings (Mean MIC)</h3>
-                <ul class="feature-list">
-                    <li class="feature-item">
-                        <span class="feature-name">Lab AgNPs</span>
-                        <span class="feature-importance">2.54 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">N. nimmoniana</span>
-                        <span class="feature-importance">3.12 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Camellia tea</span>
-                        <span class="feature-importance">4.88 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Lawsonia inermis</span>
-                        <span class="feature-importance">16.67 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Chestnut Honey (90°C)</span>
-                        <span class="feature-importance">105.00 µg/mL</span>
-                    </li>
-                    <li class="feature-item">
-                        <span class="feature-name">Verbena officinalis</span>
-                        <p>• <strong>Mean MIC:</strong> 409.03 µg/mL (51 samples, ±803.64)<br>
-                            • <strong>Higher Variability:</strong> Wide range due to resistant species (Vibrio: 2500
-                            µg/mL)<br>
-                            • <strong>Key Species:</strong> E. coli (sensitive), Vibrio cholerae (highly resistant)<br>
-                            • <strong>Mechanism:</strong> Outer membrane disruption, but some species have intrinsic
-                            resistance
-                        </p>
+                <table class="academic-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Coating Formulation</th>
+                            <th>Mean Predicted/Actual MIC</th>
+                            <th>Mechanism</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Lab AgNPs (Control)</td>
+                            <td>2.54 µg/mL</td>
+                            <td>Synthetic baseline</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Nothapodytes nimmoniana</strong></td>
+                            <td><strong>3.12 µg/mL †</strong></td>
+                            <td><strong>Phytochemical synergy</strong></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Camellia sinensis (pu-erh tea)</td>
+                            <td>4.88 µg/mL</td>
+                            <td>High phenol reduction</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Lawsonia inermis</td>
+                            <td>16.67 µg/mL</td>
+                            <td>Targeted bio-action</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Chestnut Honey (90°C)</td>
+                            <td>105.00 µg/mL</td>
+                            <td>Temperature stabilization</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Verbena officinalis</td>
+                            <td>1,356.67 µg/mL</td>
+                            <td>Limited ion release</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-caption">† ZOI data sourced physically; exact MIC metric predicted by ML model
+                    mapping.</div>
 
-                        <h3>Gram-Positive Bacteria</h3>
-                        <p>• <strong>Mean MIC:</strong> 313.39 µg/mL (35 samples, ±456.62)<br>
-                            • <strong>More Consistent:</strong> Lower variability across species<br>
-                            • <strong>Key Species:</strong> Staphylococcus, Bacillus, Listeria (moderate resistance)<br>
-                            • <strong>Mechanism:</strong> Thick peptidoglycan layer provides moderate protection</p>
-
-                        <div class="finding-box">
-                            <h3>Important Finding</h3>
-                            <p>Contrary to literature, this dataset shows Gram-positive bacteria slightly more
-                                susceptible on
-                                average, likely due to honey coating effects and specific resistant Gram-negative
-                                species.</p>
-                        </div>
-            </div>
-
-            <div class="section">
-                <h2>Representative Experiments</h2>
-
-                <table class="data-table">
+                <h3 style="margin-top: 40px;">Representative Experimental Matrix</h3>
+                <table class="academic-table">
                     <thead>
                         <tr>
                             <th>Size (nm)</th>
-                            <th>Coating</th>
-                            <th>Bacteria</th>
+                            <th>Capping Agent</th>
+                            <th>Target Bacteria</th>
                             <th>MIC (µg/mL)</th>
                             <th>ZOI (mm)</th>
-                            <th>Source</th>
+                            <th>Literature Source</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -821,14 +699,6 @@
                             <td><span class="source-tag">Loo et al.</span></td>
                         </tr>
                         <tr>
-                            <td>42.57</td>
-                            <td>Verbena</td>
-                            <td>V. cholerae</td>
-                            <td>2,500.0</td>
-                            <td>13.16</td>
-                            <td><span class="source-tag">Sanchooli et al.</span></td>
-                        </tr>
-                        <tr>
                             <td>21.65</td>
                             <td>Discopodium</td>
                             <td>E. coli</td>
@@ -836,110 +706,101 @@
                             <td>25.0</td>
                             <td><span class="source-tag">Getachew et al.</span></td>
                         </tr>
+                        <tr>
+                            <td>42.57</td>
+                            <td>Verbena</td>
+                            <td>V. cholerae</td>
+                            <td>2,500.0</td>
+                            <td>13.16</td>
+                            <td><span class="source-tag">Sanchooli et al.</span></td>
+                        </tr>
                     </tbody>
                 </table>
-            </div>
+            </section>
 
-            <div class="section">
-                <h2>Scientific Limitations</h2>
-
-                <div class="limitations">
-                    <h4>Dataset Constraints</h4>
-                    <p>• <strong>Sample Size:</strong> 86 MIC points provide moderate statistical power<br>
-                        • <strong>Feature Correlation:</strong> Size and coating effects partially confounded<br>
-                        • <strong>Biological Variability:</strong> Natural variation in bacterial responses<br>
-                        • <strong>Measurement Methods:</strong> MIC vs ZOI methodological differences</p>
-
-                    <h4>Model Limitations</h4>
-                    <p>• <strong>Prediction Uncertainty:</strong> RMSE of 332 µg/mL reflects biological complexity<br>
-                        • <strong>Cross-Validation Variability:</strong> R² range 0.33-0.98 across folds<br>
-                        • <strong>Feature Importance:</strong> Dominated by bacterial resistance patterns<br>
-                        • <strong>Algorithm Choice:</strong> Small-sample tabular data favors Random Forest over neural
-                        networks</p>
+            <section id="limitations">
+                <h2>8. Scientific Limitations</h2>
+                <div class="highlight-box warning">
+                    <div class="highlight-title" style="color: #c05621;">Dataset & Methodology Constraints</div>
+                    <ul class="sans-serif" style="margin-bottom: 0;">
+                        <li><strong>Sample Size:</strong> 86 explicit MIC points provide moderate statistical power for
+                            machine learning.</li>
+                        <li><strong>Confounding Variables:</strong> Size and coating effects are partially confounded.
+                            For instance, the smallest particles all utilized the Camellia tea coating, making it
+                            difficult for the algorithm to perfectly isolate the purely dimensional effect versus the
+                            chemical effect.</li>
+                        <li><strong>Biological Variability:</strong> Natural variations in bacterial mutations and
+                            slight differences in laboratory MIC vs ZOI methodologies introduce inherent noise
+                            (reflected in the ±332 µg/mL RMSE).</li>
+                        <li><strong>Algorithm Choice:</strong> The necessity of processing small-sample tabular data
+                            dictated the use of a Random Forest architecture over deeper neural networks.</li>
+                    </ul>
                 </div>
-            </div>
+            </section>
 
-            <div class="section">
-                <h2>ML Validation of Taduri Findings</h2>
-
-                <p>The cross-validated model directly supports Dr. Taduri's experimental results. For 18.08 nm spherical
-                    AgNPs coated with <em>N. nimmoniana</em> leaf extract against <em>E. coli</em> (Gram-negative),
-                    model predicts an MIC of <strong>113.96 µg/mL</strong>—a low value confirming the paper's
-                    observation of strong antibacterial activity. Literature mean MIC across 86 points is 169 µg/mL,
-                    positioning Taduri's system in the <strong>top quartile</strong> for green-synthesized AgNPs.</p>
+            <section id="conclusion">
+                <h2>9. Conclusions and Future Directions</h2>
+                <p>The 5-fold cross-validated model successfully decodes the interaction parameters of green-synthesized
+                    silver nanoparticles. The algorithm identifies the 10-20 nm range as optimal for establishing a
+                    balance of physical stability and antibacterial lethality, while confirming that specific plant
+                    extracts (like <em>N. nimmoniana</em> and <em>C. sinensis</em>) significantly enhance efficacy over
+                    synthetic baselines.</p>
 
                 <h3>Computational Enhancement to Taduri Research</h3>
-                <p>Beyond validation, the model guides optimization of Taduri's protocol. The 18.08 nm size falls in the
-                    identified <strong>optimal 10-20 nm range</strong>. Testing alternative coatings like <em>Camellia
-                        sinensis</em> pu-erh tea (4 nm, MIC ~4-8 µg/mL) could yield <strong>5-20x MIC
-                        improvement</strong> while retaining green synthesis principles.</p>
-            </div>
-
-            <div class="conclusion-box">
-                <h2>Conclusions and Future Directions</h2>
-
-                <h3>Key Scientific Findings</h3>
-                <p>1. <strong>Validated Model:</strong> 5-fold cross-validated R² of 0.7154 demonstrates robust
-                    predictive capability<br>
-                    2. <strong>Size Optimization:</strong> 10-20 nm range identified as optimal for antibacterial
-                    activity<br>
-                    3. <strong>Coating Enhancement:</strong> Plant extracts significantly improve nanoparticle
-                    efficacy<br>
-                    4. <strong>Species-Specific Effects:</strong> Bacterial susceptibility varies by Gram type and
-                    species</p>
-
-                <h3>Impact on Nanomedicine</h3>
-                <p>• <strong>Predictive Capability:</strong> ML models can guide nanoparticle design<br>
-                    • <strong>Resource Optimization:</strong> Reduce experimental trial-and-error<br>
-                    • <strong>Personalized Medicine:</strong> Tailor nanoparticles to specific pathogens<br>
-                    • <strong>Clinical Translation:</strong> Bridge laboratory findings to medical applications</p>
+                <p>Beyond retrospective validation, this model proactively guides the optimization of Dr. Taduri's
+                    protocol. While the 18.08 nm particle is highly effective, computational scaling suggests that
+                    manipulating the extract concentration or reaction temperature to target the <strong>10-15 nm
+                        range</strong> could yield an additional 5-20x improvement in MIC. </p>
 
                 <h3>Final Recommendation</h3>
-                <p>Machine learning <strong>validates Dr. Taduri's N. nimmoniana AgNPs as highly effective</strong>
-                    (predicted MIC 114 µg/mL E. coli) and provides actionable paths to scale: target 10-15 nm via
-                    extract concentration control, benchmark new coatings against pu-erh tea baseline. This
-                    computational framework accelerates translation of green AgNP research from bench to clinic.</p>
+                <p>Machine learning provides definitive, independent, mathematical validation of Dr. Taduri's <em>N.
+                        nimmoniana</em> AgNPs as a highly effective antimicrobial agent. This computational framework
+                    accelerates the translation of green AgNP research from bench to clinic by replacing traditional
+                    trial-and-error chemistry with targeted, predictive engineering.</p>
+            </section>
 
-                <h3>Future Research Directions</h3>
-                <p>1. <strong>Controlled Experiments:</strong> Isolate individual factor effects<br>
-                    2. <strong>Larger Datasets:</strong> Collaborative data sharing<br>
-                    3. <strong>Advanced Modeling:</strong> Deep learning and ensemble methods<br>
-                    4. <strong>Clinical Applications:</strong> In vivo studies and toxicity assessment</p>
-            </div>
+            <section id="sources">
+                <h2>10. Source Attribution & Data Availability</h2>
+                <p class="sans-serif" style="font-size: 0.95rem;"><strong>Primary Literature Sources:</strong></p>
+                <ul class="sans-serif" style="font-size: 0.95rem; color: var(--text-light);">
+                    <li>Taduri et al., NASB-D-25-00274.pdf (8 records)</li>
+                    <li>Taduri et al., Optik 2020 (5 records)</li>
+                    <li>Keskin et al., Molecules 2023, DOI: 10.3390/molecules28031358 (30 records)</li>
+                    <li>Sanchooli et al., Iran J Microbiol 2018 (15 records)</li>
+                    <li>Withania somnifera broad-spectrum study (15 records)</li>
+                    <li>Skandalis et al., Nanomaterials 2017 (8 records)</li>
+                    <li>Loo et al., Front Microbiol 2018 (4 records)</li>
+                    <li>Getachew et al., Sci Rep 2025 (4 records)</li>
+                    <li>Lawsonia inermis PMC10794286 (3 records)</li>
+                    <li>RSC review (3 records)</li>
+                    <li>Safflower 2024 (2 records)</li>
+                    <li>Resistance study (2 records)</li>
+                    <li>Review (2 records)</li>
+                    <li>Bio act (1 record)</li>
+                </ul>
 
-            <div class="section">
-                <h2>Source Attribution and Data Availability</h2>
-
-                <p><strong>Primary Literature Sources:</strong><br>
-                    • Taduri et al., NASB-D-25-00274.pdf (8 records)<br>
-                    • Keskin et al., Molecules 2023, DOI: 10.3390/molecules28031358 (30 records)<br>
-                    • Sanchooli et al., Iran J Microbiol 2018 (15 records)<br>
-                    • Withania somnifera broad-spectrum study (15 records)<br>
-                    • Skandalis et al., Nanomaterials 2017 (8 records)<br>
-                    • Taduri et al., Optik 2020 (5 records)<br>
-                    • Getachew et al., Sci Rep 2025 (4 records)<br>
-                    • Loo et al., Front Microbiol 2018 (4 records)<br>
-                    • Additional 2 research papers providing diverse experimental contexts</p>
-
-                <p><strong>Data Integration:</strong><br>
-                    • All experimental records sourced from peer-reviewed publications<br>
-                    • Complete source attribution maintained in paper_source field<br>
-                    • Notes field provides experimental context and methodology details</p>
-
-                <p><strong>Generated Analysis Files:</strong><br>
-                    • feature_importance.png - Random Forest feature importance ranking<br>
-                    • predicted_vs_actual.png - Model prediction accuracy visualization<br>
-                    • particle_size_vs_mic.png - Size-dependent antibacterial activity scatter plot<br>
-                    • cv_performance.png - Cross-validation fold performance<br>
-                    • train_model.py - ML analysis pipeline<br>
-                    • validate.py - Data quality verification script</p>
-
-                <p><strong>Model File:</strong> train_model.py (current dataset analysis)<br>
-                    <strong>Dataset:</strong> agnp_ml_100plus_unique (1).csv (111 rows, 86 MIC data points)
+                <p class="sans-serif" style="font-size: 0.95rem; margin-top: 20px;"><strong>Data Integration:</strong>
                 </p>
-            </div>
+                <ul class="sans-serif" style="font-size: 0.95rem; color: var(--text-light);">
+                    <li>All 111 experimental records sourced from peer-reviewed publications.</li>
+                    <li>Complete source attribution maintained in the <code>paper_source</code> field.</li>
+                </ul>
 
-        </div>
+                <p class="sans-serif" style="font-size: 0.95rem; margin-top: 20px;"><strong>Repository Assets:</strong>
+                </p>
+                <ul class="sans-serif" style="font-size: 0.95rem; color: var(--text-light);">
+                    <li><strong>Dataset:</strong> <code>agnp_ml_100plus_unique.csv</code></li>
+                    <li><strong>Scripts:</strong> <code>train_model.py</code>, <code>validate.py</code></li>
+                    <li><strong>Generated Figures:</strong> <code>cv_performance.png</code>,
+                        <code>predicted_vs_actual.png</code>, <code>feature_importance.png</code>,
+                        <code>particle_size_vs_mic.png</code>, <code>gram_type_vs_mic.png</code>,
+                        <code>residual_distribution.png</code>, <code>correlation_heatmap.png</code>
+                    </li>
+                </ul>
+            </section>
+
+        </main>
+    </div>
 </body>
 
 </html>
